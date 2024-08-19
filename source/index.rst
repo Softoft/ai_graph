@@ -1,17 +1,21 @@
-.. AI Graph documentation master file, created by
-   sphinx-quickstart on Mon Aug 19 16:25:27 2024.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+.. AI Graph Project documentation master file
 
-AI Graph documentation
-======================
-
-Add your content using ``reStructuredText`` syntax. See the
-`reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
-documentation for details.
-
+Welcome to AI Graph Project's documentation!
+=============================================
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
+   introduction
+   architecture
+   features
+   installation
+   aimodelgenerator
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`

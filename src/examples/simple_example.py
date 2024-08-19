@@ -17,15 +17,3 @@ class SummarizedDocument:
 class JoinedDocument:
     def __init__(self, summary: str):
         self.summary = summary
-
-
-class DocumentSummarizer(ExecutableNode):
-    def __init__(self, document: Document):
-        self.document = document
-
-    @inject_storage_objects(Document)
-    async def _execute_node(self, shared_storage) -> JoinedDocument:
-        self.ope
-
-
-document_summarizer = ExecutableNode

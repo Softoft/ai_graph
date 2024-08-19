@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>src.ai_graph.ai.ai_model_generator &mdash; AI Graph  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            AI Graph
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../architecture.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../aimodelgenerator.html">AIModelGenerator</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">AI Graph</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">src.ai_graph.ai.ai_model_generator</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for src.ai_graph.ai.ai_model_generator</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pydantic</span>
+<span class="kn">from</span> <span class="nn">openai.types.chat</span> <span class="kn">import</span> <span class="n">ParsedChatCompletion</span>
+
+<span class="kn">from</span> <span class="nn">src.ai_graph.ai.base_ai_config</span> <span class="kn">import</span> <span class="n">OpenAIModelVersion</span>
+<span class="kn">from</span> <span class="nn">src.ai_graph.ai.base_ai_model</span> <span class="kn">import</span> <span class="n">BaseAIModel</span>
+<span class="kn">from</span> <span class="nn">src.ai_graph.ai.model_describer</span> <span class="kn">import</span> <span class="n">ModelDescriber</span>
+<span class="kn">from</span> <span class="nn">src.ai_graph.ai.open_ai_client</span> <span class="kn">import</span> <span class="n">OpenAiClient</span>
+
+
+<div class="viewcode-block" id="AIModelGenerator">
+<a class="viewcode-back" href="../../../../aimodelgenerator.html#src.ai_graph.ai.ai_model_generator.AIModelGenerator">[docs]</a>
+<span class="k">class</span> <span class="nc">AIModelGenerator</span><span class="p">[</span><span class="n">OM</span><span class="p">:</span> <span class="n">BaseAIModel</span><span class="p">](</span><span class="n">BaseAIModel</span><span class="p">):</span>
+<div class="viewcode-block" id="AIModelGenerator.__init__">
+<a class="viewcode-back" href="../../../../aimodelgenerator.html#src.ai_graph.ai.ai_model_generator.AIModelGenerator.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">assistant_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="n">OpenAiClient</span><span class="p">,</span> <span class="n">open_ai_model_version</span><span class="p">:</span> <span class="n">OpenAIModelVersion</span><span class="p">,</span>
+                 <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                 <span class="n">max_tokens</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">instructions</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                 <span class="n">input_describer</span><span class="p">:</span> <span class="n">ModelDescriber</span><span class="p">,</span>
+                 <span class="n">retry_wait_min</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">retry_wait_max</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span> <span class="n">retry_attempts</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        AIModelGenerator is responsible for generating AI models based on a given configuration.</span>
+
+<span class="sd">        :param assistant_name: The name of the assistant using this model.</span>
+<span class="sd">        :param client: The OpenAI client used for generating completions.</span>
+<span class="sd">        :param open_ai_model_version: The version of the OpenAI model being used.</span>
+<span class="sd">        :param temperature: The temperature setting for the model (affects randomness).</span>
+<span class="sd">        :param max_tokens: The maximum number of tokens to generate.</span>
+<span class="sd">        :param instructions: Instructions for the AI model.</span>
+<span class="sd">        :param input_describer: A describer for generating the model&#39;s input prompts.</span>
+<span class="sd">        :param retry_wait_min: Minimum wait time between retries in case of failure.</span>
+<span class="sd">        :param retry_wait_max: Maximum wait time between retries in case of failure.</span>
+<span class="sd">        :param retry_attempts: Number of retry attempts in case of failure.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">assistant_name</span><span class="o">=</span><span class="n">assistant_name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">open_ai_model_version</span><span class="p">,</span>
+                         <span class="n">temperature</span><span class="o">=</span><span class="n">temperature</span><span class="p">,</span> <span class="n">max_tokens</span><span class="o">=</span><span class="n">max_tokens</span><span class="p">,</span> <span class="n">instructions</span><span class="o">=</span><span class="n">instructions</span><span class="p">,</span>
+                         <span class="n">retry_wait_min</span><span class="o">=</span><span class="n">retry_wait_min</span><span class="p">,</span> <span class="n">retry_wait_max</span><span class="o">=</span><span class="n">retry_wait_max</span><span class="p">,</span> <span class="n">retry_attempts</span><span class="o">=</span><span class="n">retry_attempts</span><span class="p">,</span>
+                         <span class="n">input_describer</span><span class="o">=</span><span class="n">input_describer</span><span class="p">)</span></div>
+
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_get_chat_completion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_instance</span><span class="p">,</span> <span class="n">output_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">pydantic</span><span class="o">.</span><span class="n">BaseModel</span><span class="p">],</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+                                   <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ParsedChatCompletion</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates a chat completion based on the input instance.</span>
+
+<span class="sd">        :param input_instance: The input data to generate the prompt.</span>
+<span class="sd">        :param output_type: The expected output type for the completion.</span>
+<span class="sd">        :return: A parsed chat completion response.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prompt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_describer</span><span class="o">.</span><span class="n">generate_description</span><span class="p">(</span><span class="n">input_instance</span><span class="p">)</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">get_parsed_chat_completion</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span>
+                                                             <span class="n">model_version</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_model</span><span class="o">.</span><span class="n">get_model_version</span><span class="p">(),</span>
+                                                             <span class="n">temperature</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_temperature</span><span class="p">,</span>
+                                                             <span class="n">max_tokens</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_max_tokens</span><span class="p">,</span>
+                                                             <span class="n">instruction</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_instructions</span><span class="p">,</span>
+                                                             <span class="n">response_format</span><span class="o">=</span><span class="n">output_type</span><span class="p">)</span>
+
+<div class="viewcode-block" id="AIModelGenerator.get_parsed_completion">
+<a class="viewcode-back" href="../../../../aimodelgenerator.html#src.ai_graph.ai.ai_model_generator.AIModelGenerator.get_parsed_completion">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_parsed_completion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_instance</span><span class="p">:</span> <span class="n">pydantic</span><span class="o">.</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">output_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">pydantic</span><span class="o">.</span><span class="n">BaseModel</span><span class="p">],</span>
+                                    <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OM</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the parsed completion result based on the input instance.</span>
+
+<span class="sd">        :param input_instance: The input data to generate the completion.</span>
+<span class="sd">        :param output_type: The expected output type for the completion.</span>
+<span class="sd">        :return: The generated output object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_chat_completion</span><span class="p">(</span><span class="n">input_instance</span><span class="p">,</span> <span class="n">output_type</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">parsed</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Tobi A. Bück.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
