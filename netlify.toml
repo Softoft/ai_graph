@@ -1,4 +1,4 @@
 [build]
 base = "docs"
 publish = "build/html"
-command = "make html"
+command = ""
